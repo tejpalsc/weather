@@ -3,6 +3,7 @@ package com.pactera.weather.service.impl;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.google.common.cache.LoadingCache;
 import com.pactera.weather.exception.ValidationException;
 import com.pactera.weather.model.WeatherDetails;
 import com.pactera.weather.service.WeatherDetailsService;
@@ -11,6 +12,8 @@ import com.pactera.weather.service.WeatherDetailsService;
 @Scope("singleton")
 public class WeatherDetailsServiceImpl implements WeatherDetailsService {
 
+	private LoadingCache<String, WeatherDetails> cache;
+	
 	@Override
 	public WeatherDetails getDetails(String city) throws ValidationException {
 		WeatherDetails wd = new WeatherDetails();

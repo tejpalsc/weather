@@ -7,6 +7,28 @@ import com.pactera.weather.exception.ApplicationException;
 import com.pactera.weather.service.impl.LocationServiceImpl;
 
 public class LocationServiceTest {
+
+	@Test
+	public void testInvalidCity() {
+		try {
+			boolean valid = new LocationServiceImpl().isValid("");
+			assertFalse(valid);
+		} catch (ApplicationException e) {
+
+		}
+
+	}
+
+	@Test
+	public void testValidCity() {
+		try {
+			boolean valid = new LocationServiceImpl().isValid("Sydney");
+			assertTrue(valid);
+		} catch (ApplicationException e) {
+
+		}
+
+	}
 	
 	@Test
 	public void testSupportedCitiesy() {

@@ -6,4 +6,6 @@ public interface LocationService {
 	
 	public String[] getSupportedCities() throws ApplicationException;
 
+	boolean isValid(String city);
+
 }

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.pactera.weather.exception.ApplicationException;
 import com.pactera.weather.exception.ValidationException;
 import com.pactera.weather.model.WeatherDetails;
 import com.pactera.weather.service.impl.WeatherDetailsServiceImpl;
@@ -20,7 +21,7 @@ public class WeatherServiceTest {
 			assertNotNull(wd.getTemperature());
 			assertNotNull(wd.getWindSpeed());
 			assertNotNull(wd.getWeather());
-		} catch (ValidationException e) {
+		} catch (ValidationException | ApplicationException e) {
 
 		}
 	}

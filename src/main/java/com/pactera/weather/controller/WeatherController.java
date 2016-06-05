@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pactera.weather.exception.ApplicationException;
 import com.pactera.weather.exception.ValidationException;
 import com.pactera.weather.model.WeatherDetails;
+import com.pactera.weather.service.LocationService;
 import com.pactera.weather.service.WeatherDetailsService;
 
 @Controller
@@ -23,11 +24,19 @@ public class WeatherController {
 	
 	@Autowired
 	private WeatherDetailsService weatherService;
+	
+	@Autowired
+	private LocationService locationService;
 
 	@RequestMapping(value = "/details", method = RequestMethod.GET)
 	public @ResponseBody
 	WeatherDetails getWeatherDetails(@RequestParam String city) throws ValidationException {
 		logger.debug("Serving weather details for city: {}.", city);
+		
+		if(!locationService.isValid(city)) {
+			logger.error("Unsupported city: " + city );
+			throw new ValidationException("Unsupported City.");
+		}
 		
 		return weatherService.getDetails(city);
 	}
@@ -36,7 +45,7 @@ public class WeatherController {
 	public @ResponseBody
 	String[] getCityList() throws ValidationException, ApplicationException {
 		logger.debug("Serving list of supported cities.");
-		return new String[]{"Sydney", "Mebbourne"};
+		return locationService.getSupportedCities();
 	}
 
 	@ExceptionHandler(ValidationException.class)
