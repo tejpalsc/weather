@@ -1,3 +1,154 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    </meta>
+    <title>Weather</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css" />
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+        
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+        }
+        
+        body.loading {
+            overflow: hidden;
+        }
+        
+        body.loading .modal {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+        $body = $("body");
+
+        $(document).on({
+            ajaxStart: function() {
+                $body.addClass("loading");
+            },
+            ajaxStop: function() {
+                $body.removeClass("loading");
+            }
+        });
+        
+        function onError() {
+            $("#weatherDetails").empty()
+            $("#weatherDetails").append($("<p><b>Error fetching data.</b></p>"))
+        }    
+
+        function onSelect() {
+            jQuery.support.cors = true;
+            var combo = document.getElementById("cityList");
+            var strCity = combo.options[combo.selectedIndex].text;
+            $.ajax({
+                type: "GET",
+                url: '/weather/api/details?city=' + strCity,
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(data) {
+
+                    $("#weatherDetails").empty()
+                    $("#weatherDetails").append($("table"))
+                        .append(
+                            "<tr><td>City:</td><td>" + data.name +
+                            "</td></tr>").append(
+                            "<tr><td>Temperature:</td><td>" +
+                            data.temperature +
+                            " &#8457;</td></tr>").append(
+                            "<tr><td>Weather:</td><td>" + data.weather +
+                            "</td></tr>").append(
+                            "<tr><td>Wind:</td><td>" + data.windSpeed +
+                            " KMPH</td></tr>").append(
+                            "<tr><td>Last Updated:</td><td>" +
+                            data.lastUpdated + "</td></tr>")
+
+                },
+                error: function(msg, url, line) {
+                    onError();
+
+                }
+            });
+        }
+        $(document)
+            .ready(
+                function() {
+                    $.ajax({
+                        type: "GET",
+                        url: '/weather/api/cities',
+                        data: "{}",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function(data) {
+
+                            $.each(
+                                data,
+                                function(i, theItem) {
+                                    var combo = document
+                                        .getElementById("cityList");
+                                    var option = document
+                                        .createElement("option");
+                                    option.text = theItem
+                                        .toString();
+                                    option.value = theItem
+                                        .toString();
+                                    try {
+                                        combo
+                                            .add(
+                                                option,
+                                                null); // Other browsers
+                                    } catch (error) {
+                                        combo
+                                            .add(option); // really old browser
+                                    }
+                                });
+                        },
+                        error: function(msg, url, line) {
+                            onError();
+                        }
+                    });
+
+                });
+    </script>
+    <div align="center">
+    <br></br>
+    <form id="form" action="#" name="form">
+        
+            <label> Get Weather update </label> <br></br>
+            <select id="cityList" class="weather" name="cboFastBikes" onchange="onSelect()">
+               <option value = "" disabled selected>Select City</option>
+            </select>
+        
+    </form>
+    <br></br>
+    <div id="weatherDetails"></div>
+    <div class="modal"></div>
+    </div>
+</body>
+
 </html>
