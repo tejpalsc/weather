@@ -10,6 +10,10 @@ import com.pactera.weather.exception.ApplicationException;
 import com.pactera.weather.service.LocationService;
 import com.pactera.weather.util.Config;
 
+/**
+ * @author Tejpal
+ *
+ */
 @Service
 @Scope("singleton")
 public class LocationServiceImpl implements LocationService{

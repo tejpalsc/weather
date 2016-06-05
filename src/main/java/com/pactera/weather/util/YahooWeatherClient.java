@@ -14,9 +14,15 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import com.pactera.weather.exception.ApplicationException;
-import com.pactera.weather.exception.ValidationException;
 import com.pactera.weather.model.WeatherDetails;
 
+/**
+ * 
+ * @author Tejpal
+ * 
+ * A rudimentary client to call Yahoo weather API
+ *
+ */
 public class YahooWeatherClient {
 	private String weatherApiUrl; 
 	

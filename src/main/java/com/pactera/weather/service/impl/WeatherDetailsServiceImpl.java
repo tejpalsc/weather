@@ -21,6 +21,8 @@ import com.pactera.weather.util.YahooWeatherClient;
 public class WeatherDetailsServiceImpl implements WeatherDetailsService {
 
 	private YahooWeatherClient yahooWeatherClient; 
+	
+	// cache for weather details
 	private LoadingCache<String, WeatherDetails> cache;
 	
 	public WeatherDetailsServiceImpl() throws ApplicationException {
@@ -28,6 +30,7 @@ public class WeatherDetailsServiceImpl implements WeatherDetailsService {
 		yahooWeatherClient = new YahooWeatherClient();
 		long cacheExpiry = Long.parseLong(Config.getConfiguration("refresh-interval"));
 		
+		// Caching details fetched from external APIs
 		cache = CacheBuilder.newBuilder()
 		            .maximumSize(100)
 		            .expireAfterWrite(cacheExpiry, TimeUnit.SECONDS)
