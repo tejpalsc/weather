@@ -1,7 +1,7 @@
 # Weather Service Application
 
 ## Set-Up Instructions
-This is a single module maven project. It can be built using 'mvn package' in the /horoscpe directory(please make sure that JAVA_HOME points to a jre of version 1.7.x or higher), and deployed on a server. Alternatively it can be tested with the embedded jetty server using:
+This is a single module maven project. It can be built using 'mvn package' in the /weather directory(please make sure that JAVA_HOME points to a jre of version 1.7.x or higher), and deployed on a server. Alternatively it can be tested with the embedded jetty server using:
 ```sh
 mvn jetty:run
 ```

@@ -11,7 +11,7 @@ import com.pactera.weather.exception.ApplicationException;
  */
 public interface LocationService {
 	/**
-	 * @returnn list of cities
+	 * @return list of cities
 	 * @throws ApplicationException
 	 */
 	public String[] getSupportedCities() throws ApplicationException;
